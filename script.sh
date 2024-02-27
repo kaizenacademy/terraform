@@ -44,11 +44,13 @@ function create_hosts() {
     echo -e "[master]\nworker1 ansible_host=$IP_ADDRESS_WORKER1" >> ../Ansible/hosts
     echo -e "[master]\nworker2 ansible_host=$IP_ADDRESS_WORKER2" >> ../Ansible/hosts
 }
+ansible-galaxy collection install community.general
 
 ansible() {
     cd ../Ansible
     ansible-playbook -i hosts main.yml
     ansible-playbook -i hosts rke.yml
+    ansible-playbook -i hosts docker.yml
 }
 # Check for Terraform
 if command_exists terraform; then
