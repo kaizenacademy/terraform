@@ -1,0 +1,18 @@
+---
+- name: Install RKE
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Download RKE binary
+      get_url:
+        url: "https://github.com/rancher/rke/releases/download/v1.5.5/rke_linux-amd64"
+        dest: "/tmp/rke_linux-amd64"
+        mode: '0755'
+
+    - name: Make the RKE binary executable
+      file:
+        path: "/tmp/rke_linux-amd64"
+        mode: '0755'
+
+    - name: Move RKE binary to install directory
+      command: mv /tmp/rke_linux-amd64 /usr/local/bin/rke
