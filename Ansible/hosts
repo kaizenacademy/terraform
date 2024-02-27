@@ -1,0 +1,6 @@
+[master]
+master1 157.245.13.250
+[master]
+worker1 167.71.251.74
+[master]
+worker2 165.227.103.195
