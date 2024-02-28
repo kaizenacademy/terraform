@@ -1,8 +1,17 @@
 #!/bin/bash
 
+# command_exists() {
+#     command -v "$@" > /dev/null 2>&1
+# }
+
 command_exists() {
-    command -v "$@" > /dev/null 2>&1
+    echo "Checking command: $1"
+    command -v "$1"
+    result=$?
+    echo "Result: $result"
+    return $result
 }
+
 
 # install_terraform() {
 #     echo "Installing Terraform..."
@@ -60,11 +69,19 @@ else
 fi
 
 # Check for Ansible
-if command_exists ansible; then
+# if command_exists ansible; then
+#     echo "Ansible is already installed."
+# else
+#     install_ansible
+# fi
+
+if ansible --version > /dev/null 2>&1; then
     echo "Ansible is already installed."
 else
+    echo "Ansible is not installed."
     install_ansible
 fi
+
 
 create_vms
 create_hosts
