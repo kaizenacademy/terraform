@@ -1,0 +1,9 @@
+- name: Add user to the Docker group
+  hosts: all
+  become: yes
+  tasks:
+    - name: Add rke user to docker group
+      ansible.builtin.user:
+        name: rke
+        groups: docker
+        append: yes

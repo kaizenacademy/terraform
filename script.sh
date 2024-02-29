@@ -49,9 +49,9 @@ function create_hosts() {
     IP_ADDRESS_MASTER1=$(terraform output -raw master)
     IP_ADDRESS_WORKER1=$(terraform output -raw worker1)
     IP_ADDRESS_WORKER2=$(terraform output -raw worker2)
-    echo -e "[master]\nmaster1 ansible_host=$IP_ADDRESS_MASTER1" > ../Ansible/hosts
-    echo -e "[worker]\nworker1 ansible_host=$IP_ADDRESS_WORKER1" >> ../Ansible/hosts
-    echo -e "worker2 ansible_host=$IP_ADDRESS_WORKER2" >> ../Ansible/hosts
+    echo -e "[master]\nmaster1 ansible_host=$IP_ADDRESS_MASTER1" ansible_ssh_common_args='-o StrictHostKeyChecking=no' > ../Ansible/hosts
+    echo -e "[worker]\nworker1 ansible_host=$IP_ADDRESS_WORKER1" ansible_ssh_common_args='-o StrictHostKeyChecking=no' >> ../Ansible/hosts
+    echo -e "worker2 ansible_host=$IP_ADDRESS_WORKER2" ansible_ssh_common_args='-o StrictHostKeyChecking=no' >> ../Ansible/hosts
 }
 ansible-galaxy collection install community.general
 
