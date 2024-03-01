@@ -1,5 +1,5 @@
 [master]
-master1 ansible_host=159.65.242.44
+master1 ansible_host=138.197.107.194 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 [worker]
-worker1 ansible_host=167.99.57.184
-worker2 ansible_host=159.65.242.248
+worker1 ansible_host=138.197.107.200 ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+worker2 ansible_host=138.197.107.215 ansible_ssh_common_args='-o StrictHostKeyChecking=no'

@@ -49,9 +49,12 @@ function create_hosts() {
     IP_ADDRESS_MASTER1=$(terraform output -raw master)
     IP_ADDRESS_WORKER1=$(terraform output -raw worker1)
     IP_ADDRESS_WORKER2=$(terraform output -raw worker2)
-    echo -e "[master]\nmaster1 ansible_host=$IP_ADDRESS_MASTER1" ansible_ssh_common_args='-o StrictHostKeyChecking=no' > ../Ansible/hosts
-    echo -e "[worker]\nworker1 ansible_host=$IP_ADDRESS_WORKER1" ansible_ssh_common_args='-o StrictHostKeyChecking=no' >> ../Ansible/hosts
-    echo -e "worker2 ansible_host=$IP_ADDRESS_WORKER2" ansible_ssh_common_args='-o StrictHostKeyChecking=no' >> ../Ansible/hosts
+    echo -e "[master]\nmaster1 ansible_host=$IP_ADDRESS_MASTER1 ansible_ssh_common_args='-o StrictHostKeyChecking=no'" > ../Ansible/hosts
+    echo -e "[worker]\nworker1 ansible_host=$IP_ADDRESS_WORKER1 ansible_ssh_common_args='-o StrictHostKeyChecking=no'" >> ../Ansible/hosts
+    echo -e "worker2 ansible_host=$IP_ADDRESS_WORKER2 ansible_ssh_common_args='-o StrictHostKeyChecking=no'" >> ../Ansible/hosts
+    echo $IP_ADDRESS_MASTER1 > ../RKE/master1
+    echo $IP_ADDRESS_WORKER1 > ../RKE/worker1
+    echo $IP_ADDRESS_WORKER2 > ../RKE/worker2
 }
 ansible-galaxy collection install community.general
 
@@ -60,6 +63,14 @@ ansible() {
     ansible-playbook -i hosts main.yml
     ansible-playbook -i hosts rke.yml
     ansible-playbook -i hosts docker.yml
+}
+
+create_rke() {
+    cd ../RKE
+    terraform init
+    terraform apply --auto-approve
+    mkdir -p ~/.kube
+    terraform output -raw kube_config > ~/.kube/config
 }
 # Check for Terraform
 if command_exists terraform; then
@@ -86,3 +97,4 @@ fi
 create_vms
 create_hosts
 ansible
+create_rke
